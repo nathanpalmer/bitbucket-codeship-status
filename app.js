@@ -55,16 +55,19 @@ module.exports = function () {
 			var widget = '[ ![Codeship Status for ' + pullRequest.source.repository.full_name + '](https://codeship.io/projects/' + req.param('codeshipProjectUuid') +'/status?branch=' + pullRequest.source.branch.name + ')](https://codeship.io/projects/' + req.param('codeshipProjectId') + ')';
 			pullRequest.description = widget + '\r\n\r\n' + pullRequest.description;
 
+			console.log('Sending request back to BitBucket');
 			Request({
 				url: 'https://' + process.env.BITBUCKET_USERNAME + ':' + process.env.BITBUCKET_PASSWORD + '@api.bitbucket.org/2.0/repositories/' + pullRequest.source.repository.full_name + '/pullrequests/' + pullRequest.id,
 				method: 'PUT',
 				json: pullRequest
 			}, function (err, response, body) {
+				console.log(err);
 				if (err) {
 					res.status(500).end();
 					return;
 				}
 
+				console.log(response.body);
 				if (response.body && response.body.error) {
 					res.status(500).end();
 					return;
