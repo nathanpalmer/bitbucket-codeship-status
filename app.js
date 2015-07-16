@@ -35,17 +35,17 @@ module.exports = function () {
 		}
 
 		// verify we have the information we need
-		if (!req.body.pullrequest_created) {
-			console.log('pullrequest_created is not found');
+		if (!req.body.pullrequest) {
+			console.log('pullrequest is not found');
 			console.log(req.body);
 			res.status(400).end();
 			return;
 		}
-		var pullRequest = req.body.pullrequest_created;
+		var pullRequest = req.body.pullrequest;
 
 		if (!pullRequest.id || typeof(pullRequest.description) !== 'string' || !(pullRequest.source && pullRequest.source.branch && pullRequest.source.branch.name) || !(pullRequest.source && pullRequest.source.repository && pullRequest.source.repository.full_name)) {
 			console.log('description | source | source.branch | soruce.branch.name | source.repository | source.repository.full_name is not found');
-			console.log(req.body);
+			console.log(pullRequest);
 			res.status(400).end();
 			return;
 		}
